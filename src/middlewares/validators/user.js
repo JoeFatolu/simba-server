@@ -34,7 +34,7 @@ class CustomerValidator {
   }
   static validateCreateTransaction(req, res, next) {
     const schema = Joi.object({
-      to: Joi.string().required().error(new Error("to is required")),
+      to: Joi.string().required().error(new Error("Recipiet is required")),
       targetCurrency: Joi.string().required().error(new Error("targetCurrency is required")),
       sourceCurrency: Joi.string().required().error(new Error("sourceCurrency is required")),
       amount: Joi.number().required().error(new Error("a valid amount is required")),
