@@ -1,0 +1,48 @@
+const BaseAppError = require("../errors/base");
+
+const successData = (content, message) => ({
+  success: true,
+  message,
+  data: content,
+});
+
+const errorData = (content, message) => ({
+  success: false,
+  message,
+  data: content,
+});
+
+const successResponse = (res, content, message, status = 200) => {
+  const data = {
+    success: true,
+    message,
+    data: content,
+  };
+  res.status(status).json(data);
+};
+
+const errorResponse = (res, content, message, status = 400) => {
+  status = !status ? 400 : status;
+  const data = {
+    success: false,
+    message,
+    data: content,
+  };
+  res.status(status).json(data);
+};
+
+const errorResponseLog = (res, content, message, error, status = 500) => {
+  if (error instanceof BaseAppError || error.appError) {
+    return errorResponse(res, content, error.message, error.status);
+  }
+  const msg = typeof error === "string" ? error : message;
+  return errorResponse(res, content, msg, status);
+};
+
+module.exports = {
+  successResponse,
+  errorResponse,
+  errorResponseLog,
+  errorData,
+  successData,
+};
